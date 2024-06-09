@@ -56,7 +56,7 @@ const App = () => {
       </Box>
 
       <Box sx={{ display: "flex", flexDirection: "column", placeItems: 'center' }} gap={2}>
-        <Typography variant="h4">
+        <Typography variant="h5">
           Grade 1 Reading List
         </Typography>
 
@@ -65,7 +65,7 @@ const App = () => {
           readingList={readingList}
         />
 
-        <Box sx={{ padding: "20px" }}>
+        <Box sx={{ padding: "20px", flexGrow: 1 }}>
           <ReadingList
             readingList={readingList}
             removeFromReadingList={removeFromReadingList}

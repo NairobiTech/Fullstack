@@ -5,14 +5,14 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-import { Book as IBook } from "../../types";
+import { Book } from "../../types";
 
-const Book = ({
+const SingleResultCard = ({
   book,
   addToReadingList,
 }: {
-  book: IBook & { isInReadingList: boolean };
-  addToReadingList: (book: IBook) => void;
+  book: Book & { isInReadingList: boolean };
+  addToReadingList: (book: Book) => void;
 }) => {
   const isSmallDevice = useMediaQuery("(max-width:600px)");
 
@@ -64,4 +64,4 @@ const Book = ({
   );
 };
 
-export default Book;
+export default SingleResultCard;

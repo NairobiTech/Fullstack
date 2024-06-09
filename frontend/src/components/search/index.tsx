@@ -8,8 +8,8 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import debounce from "lodash/debounce";
 
-import { Book as IBook, BookWithReadingListStatus } from "../../types";
-import Book from "./Book";
+import { Book, BookWithReadingListStatus } from "../../types";
+import SingleResultCard from "./SingleResultCard";
 import EndAdornment from "./EndAdornment";
 
 const GET_BOOKS = gql`
@@ -27,8 +27,8 @@ const Search = ({
   addToReadingList,
   readingList,
 }: {
-  readingList: IBook[];
-  addToReadingList: (book: IBook) => void;
+  readingList: Book[];
+  addToReadingList: (book: Book) => void;
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -38,7 +38,6 @@ const Search = ({
     skip: !debouncedQuery || debouncedQuery.length < 3,
   });
 
-  // Create a debounced function for setting the search query
   const debounceSearch = useMemo(
     () =>
       debounce((query: string) => {
@@ -47,7 +46,6 @@ const Search = ({
     []
   );
 
-  // Handle input change and debounce the search query update
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setSearchQuery(value);
@@ -60,14 +58,14 @@ const Search = ({
   };
 
   const handleAddToReadingList = useCallback(
-    (book: IBook) => {
+    (book: Book) => {
       addToReadingList(book);
       resetSearchQueries();
     },
     [addToReadingList]
   );
 
-  const mapIsInReadingList = data?.books.map((book: IBook) => {
+  const mapIsInReadingList = data?.books.map((book: Book) => {
     return {
       ...book,
       isInReadingList: readingList.some((b) => b.title === book.title),
@@ -117,7 +115,7 @@ const Search = ({
                 mapIsInReadingList?.map(
                   (book: BookWithReadingListStatus, index: number) => (
                     <ListItem key={index}>
-                      <Book
+                      <SingleResultCard
                         book={book}
                         addToReadingList={handleAddToReadingList}
                       />

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 
@@ -9,7 +9,7 @@ import reportWebVitals from "./reportWebVitals";
 import theme from "./theme";
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/',
+  uri: "http://localhost:4000/",
   cache: new InMemoryCache(),
 });
 
@@ -18,11 +18,11 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-  <ApolloProvider client={client}>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
+    <ApolloProvider client={client}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <App />
+      </ThemeProvider>
     </ApolloProvider>
   </React.StrictMode>
 );
