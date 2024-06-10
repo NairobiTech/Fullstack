@@ -5,15 +5,12 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-import { Book } from "../../types";
+import { ISingleResultCardProps } from "../../lib/types";
 
 const SingleResultCard = ({
   book,
-  addToReadingList,
-}: {
-  book: Book & { isInReadingList: boolean };
-  addToReadingList: (book: Book) => void;
-}) => {
+  addBookToReadingList,
+}: ISingleResultCardProps) => {
   const isSmallDevice = useMediaQuery("(max-width:600px)");
 
   return (
@@ -49,12 +46,14 @@ const SingleResultCard = ({
             color="primary"
             startIcon={<AddIcon />}
             sx={{ width: 220 }}
-            onClick={() => addToReadingList({
+            onClick={() =>
+              addBookToReadingList({
                 title: book.title,
                 author: book.author,
                 coverPhotoURL: book.coverPhotoURL,
                 readingLevel: book.readingLevel,
-            })}
+              })
+            }
           >
             Add to Reading List
           </Button>

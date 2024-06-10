@@ -1,33 +1,39 @@
 import { useState, useEffect } from "react";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
-import Tooltip from '@mui/material/Tooltip';
 import Typography from "@mui/material/Typography";
-import useMediaQuery from "@mui/material/useMediaQuery";
 
-import Logo from "./logo.svg";
+import BackButton from "./components/BackButton";
+import Header from "./components/Header";
 import ReadingList from "./components/readingList";
 import SearchBar from "./components/search";
 import SnackBar from "./components/SnackBar";
-import { Book, SnackBarOptions } from "./types";
+import { getDataFromLocalStorage, setDataToLocalStorage } from "./lib/helpers";
+import { IBook, ISnackBarOptions } from "./lib/types";
 
 const App = () => {
-  const [readingList, setReadingList] = useState<Book[]>(
-    JSON.parse(localStorage.getItem("readingList") || "[]")
+  const [readingList, setReadingList] = useState<IBook[]>(
+    getDataFromLocalStorage("readingList") ?? []
   );
-  const [snackBarOptions, setSnackBarOptions] = useState<SnackBarOptions>({
+
+  const [snackBarOptions, setSnackBarOptions] = useState<ISnackBarOptions>({
     open: false,
     message: "",
     severity: "success",
   });
 
-  const isSmallDevice = useMediaQuery("(max-width:600px)");
+  useEffect(() => {
+    const savedReadingList = localStorage.getItem("readingList");
+    if (savedReadingList) {
+      setReadingList(JSON.parse(savedReadingList));
+    }
+  }, []);
 
-  const addToReadingList = (book: Book) => {
+  useEffect(() => {
+    setDataToLocalStorage("readingList", readingList);
+  }, [readingList]);
+
+  const addBookToReadingList = (book: IBook) => {
     const isBookInList = readingList.some((b) => b === book);
     if (isBookInList) return;
 
@@ -39,7 +45,7 @@ const App = () => {
     });
   };
 
-  const removeFromReadingList = (book: Book) => {
+  const removeBookFromReadingList = (book: IBook) => {
     setReadingList(readingList.filter((b) => b !== book));
     setSnackBarOptions({
       open: true,
@@ -48,70 +54,35 @@ const App = () => {
     });
   };
 
-  useEffect(() => {
-    const savedReadingList = localStorage.getItem("readingList");
-    if (savedReadingList) {
-      setReadingList(JSON.parse(savedReadingList));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("readingList", JSON.stringify(readingList));
-  }, [readingList]);
-
   return (
-    <>
-      <Container sx={{ cursor: "pointer" }}>
-        <SnackBar options={snackBarOptions} setOptions={setSnackBarOptions} />
+    <Container sx={{ cursor: "pointer" }}>
+      <SnackBar options={snackBarOptions} setOptions={setSnackBarOptions} />
 
-        <Box sx={{ display: "flex", padding: "20px", alignItems: "center" }}>
-          <Box sx={{ display: "flex", alignItems: "center" }} gap={2}>
-            <img src={Logo} alt="logo" width={50} height={50} />
-            <Typography variant="h5" fontSize='bold' mt={1}>Teachers</Typography>
-          </Box>
+      <Header />
+      <BackButton />
 
-          <Chip
-            avatar={<Avatar alt="Natacha" src="/assets/image1.webp" />}
-            label="Cetrick"
-            variant="outlined"
-            sx={{ marginLeft: "auto" }}
-          />
-        </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          placeItems: "center",
+          pb: 4,
+        }}
+        gap={2}
+      >
+        <Typography variant="h5">Grade 1 Reading List</Typography>
 
-        {!isSmallDevice && (
-          <Box sx={{ display: "flex", padding: "10px" }}>
-            <Tooltip title="This Link is for demo purposes, it does not lead to a page." placement="bottom">
-              <Button startIcon={<ArrowBackIcon />}>
-                Back to reading sets
-              </Button>
-            </Tooltip>
-          </Box>
-        )}
+        <SearchBar
+          addBookToReadingList={addBookToReadingList}
+          readingList={readingList}
+        />
 
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            placeItems: "center",
-          }}
-          gap={2}
-        >
-          <Typography variant="h5">Grade 1 Reading List</Typography>
-
-          <SearchBar
-            addToReadingList={addToReadingList}
-            readingList={readingList}
-          />
-
-          <Box sx={{ padding: "20px", flexGrow: 1 }}>
-            <ReadingList
-              readingList={readingList}
-              removeFromReadingList={removeFromReadingList}
-            />
-          </Box>
-        </Box>
-      </Container>
-    </>
+        <ReadingList
+          readingList={readingList}
+          removeBookFromReadingList={removeBookFromReadingList}
+        />
+      </Box>
+    </Container>
   );
 };
 

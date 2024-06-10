@@ -7,16 +7,15 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 
-import { Book } from "../../types";
+import { IBook } from "../../lib/types";
 
-const BookCard = ({
-  book,
-  removeFromReadingList,
-}: {
-  book: Book;
-  removeFromReadingList: (book: Book) => void;
-}) => (
-  <Card sx={{ minWidth: 275 }}>
+interface BookCardProps {
+  book: IBook;
+  removeBookFromReadingList: (book: IBook) => void;
+}
+
+const BookCard = ({ book, removeBookFromReadingList }: BookCardProps) => (
+  <Card raised>
     <CardActionArea>
       <CardMedia
         component="img"
@@ -24,8 +23,8 @@ const BookCard = ({
         image={book.coverPhotoURL}
         alt={book.title}
       />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+      <CardContent sx={{ height: 150 }}>
+        <Typography gutterBottom variant="h6" component="div">
           {book.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
@@ -41,7 +40,7 @@ const BookCard = ({
         variant="outlined"
         color="primary"
         startIcon={<RemoveIcon />}
-        onClick={() => removeFromReadingList(book)}
+        onClick={() => removeBookFromReadingList(book)}
       >
         Remove From Reading List
       </Button>

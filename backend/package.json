@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend Server",
   "main": "app.ts",
   "scripts": {
     "start": "ts-node src/app.ts",
@@ -11,7 +11,7 @@
     "lint-fix": "npm run lint -- --fix"
   },
   "keywords": [],
-  "author": "",
+  "author": "Cetrick Afundi",
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.10.4",

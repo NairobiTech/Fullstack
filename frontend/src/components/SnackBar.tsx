@@ -1,15 +1,9 @@
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
-import { SnackBarOptions } from "../types";
+import { ISnackBarProps } from "../lib/types";
 
-const SnackBar = ({
-  options,
-  setOptions,
-}: {
-  options: SnackBarOptions;
-  setOptions: (options: SnackBarOptions) => void;
-}) => {
+const SnackBar = ({ options, setOptions }: ISnackBarProps) => {
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string

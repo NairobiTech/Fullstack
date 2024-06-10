@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import Box from "@mui/material/Box";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import List from "@mui/material/List";
@@ -8,28 +8,16 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import debounce from "lodash/debounce";
 
-import { Book, BookWithReadingListStatus } from "../../types";
+import { GET_BOOKS } from "../../lib/graphql/queries";
+import {
+  IBook,
+  IBookWithReadingListStatus,
+  ISearchBarProps,
+} from "../../lib/types";
 import SingleResultCard from "./SingleResultCard";
 import EndAdornment from "./EndAdornment";
 
-const GET_BOOKS = gql`
-  query GetBooks($title: String) {
-    books(title: $title) {
-      title
-      author
-      coverPhotoURL
-      readingLevel
-    }
-  }
-`;
-
-const Search = ({
-  addToReadingList,
-  readingList,
-}: {
-  readingList: Book[];
-  addToReadingList: (book: Book) => void;
-}) => {
+const Search = ({ addBookToReadingList, readingList }: ISearchBarProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
 
@@ -57,15 +45,15 @@ const Search = ({
     setDebouncedQuery("");
   };
 
-  const handleAddToReadingList = useCallback(
-    (book: Book) => {
-      addToReadingList(book);
+  const handleaddBookToReadingList = useCallback(
+    (book: IBook) => {
+      addBookToReadingList(book);
       resetSearchQueries();
     },
-    [addToReadingList]
+    [addBookToReadingList]
   );
 
-  const mapIsInReadingList = data?.books.map((book: Book) => {
+  const mapIsInReadingList = data?.books.map((book: IBook) => {
     return {
       ...book,
       isInReadingList: readingList.some((b) => b.title === book.title),
@@ -113,11 +101,11 @@ const Search = ({
             <List>
               {mapIsInReadingList?.length > 0 ? (
                 mapIsInReadingList?.map(
-                  (book: BookWithReadingListStatus, index: number) => (
+                  (book: IBookWithReadingListStatus, index: number) => (
                     <ListItem key={index}>
                       <SingleResultCard
                         book={book}
-                        addToReadingList={handleAddToReadingList}
+                        addBookToReadingList={handleaddBookToReadingList}
                       />
                     </ListItem>
                   )
