@@ -1,5 +1,5 @@
 ### Screenshot of the page design
-<img width="666" alt="Screenshot 2024-06-10 at 03 44 20" src="https://github.com/NairobiTech/Fullstack/assets/57017888/e4c5242c-c76a-4c40-8dda-b835a23db642">
+<img width="1344" alt="Screenshot 2024-06-10 at 06 40 05" src="https://github.com/NairobiTech/Fullstack/assets/57017888/4364ea70-df13-4fa3-9b5e-ddd9028ce33a">
 
 ### How To Run The Project
 - Clone the repository
