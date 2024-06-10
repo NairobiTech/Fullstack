@@ -24,3 +24,9 @@ export interface ReadingListProps {
 export interface BookWithReadingListStatus extends Book {
   isInReadingList: boolean;
 }
+
+export interface SnackBarOptions {
+  severity: "success" | "error" | "warning" | "info";
+  message: string;
+  open: boolean;
+}
